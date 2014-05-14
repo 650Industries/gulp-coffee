@@ -34,7 +34,9 @@ module.exports = function (opt) {
     try {
       data = coffee.compile(str, options);
     } catch (err) {
-      return this.emit('error', new Error(err));
+      var e = new Error(err);
+      e.options = options;
+      return this.emit('error', e);
     }
 
     if (options.sourceMap) {
