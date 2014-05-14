@@ -35,7 +35,14 @@ module.exports = function (opt) {
       data = coffee.compile(str, options);
     } catch (err) {
       var e = new Error(err);
-      e.options = options;
+
+      // Make non-enumerable so we don't clutter up log messages
+      Object.defineProperty(e, 'options', {
+        value: options,
+        configurable: true,
+        writeable: true,
+      });
+
       return this.emit('error', e);
     }
 
